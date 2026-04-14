@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              slate: {
+                50: '#F8FAFC',
+                100: '#F1F5F9',
+                200: '#E2E8F0',
+                300: '#CBD5E1',
+                400: '#94A3B8',
+                500: '#64748B',
+                600: '#475569',
+                700: '#334155',
+                800: '#1E293B',
+                900: '#0F172A',
+              },
+              blue: {
+                50: '#EFF6FF',
+                600: '#2563EB',
+              }
+            },
+            borderRadius: {
+              "DEFAULT": "0.25rem",
+              "lg": "0.5rem",
+              "xl": "0.75rem",
+              "full": "9999px"
+            },
+            fontFamily: {
+              "headline": ["Inter", "sans-serif"],
+              "body": ["Inter", "sans-serif"],
+              "label": ["Inter", "sans-serif"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        display: inline-block;
+        line-height: 1;
+        text-transform: none;
+        letter-spacing: normal;
+        word-wrap: normal;
+        white-space: nowrap;
+        direction: ltr;
+      }
+      .tabular-nums {
+        font-variant-numeric: tabular-nums;
+      }
+    </style>
+</head>
+<body class="bg-slate-50 font-body text-slate-900 antialiased">
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-0 h-full w-[240px] border-r border-slate-200 bg-white flex flex-col h-screen overflow-y-auto z-50">
+<div class="text-lg font-bold text-slate-900 px-4 mb-6 mt-6">
+            ScraperAdmin
+            <div class="text-xs font-normal text-slate-500 mt-1">v2.4.0</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 text-slate-600 hover:bg-slate-50 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<!-- Active Tab: Properties -->
+<a class="flex items-center gap-3 px-4 py-2 text-blue-600 bg-blue-50 font-semibold border-r-2 border-blue-600" href="#">
+<span class="material-symbols-outlined" data-icon="list_alt">list_alt</span>
+<span>Properties</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-slate-600 hover:bg-slate-50 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="language">language</span>
+<span>Sources</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-slate-600 hover:bg-slate-50 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span>Logs</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-slate-600 hover:bg-slate-50 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+<div class="p-4 border-t border-slate-100 flex items-center gap-3">
+<img alt="User profile" class="w-8 h-8 rounded-full" data-alt="professional portrait of a tech administrator with a neutral expression and clean modern workspace background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpUfYc1sU3TfW9KLT5msanZPEw99-NbMhlYsQJ-WZyi_V7piM2YAybRxb7njhIBMkXfTbnS6SA_gCrZ2L5jC88LsxCyw_lnR_w9tqSSppw91kWJ-UM5rWxj_ZmyjJHowq57w7QLNsFoYWj31qtRD8JDiHRV0nPSk9AL9YRSCjESZj7_9mgHGyDr1AdQQXV4oeee6ip0yAZKikpCs9nG55LVx9uOUmltYFNJAPovB0ast_E6zrUP9-oskNTTdhv0VDkepygkYC0oAQ"/>
+<div class="text-xs">
+<p class="font-semibold">Admin User</p>
+<p class="text-slate-500">Premium Account</p>
+</div>
+</div>
+</aside>
+<!-- TopNavBar Shell -->
+<header class="fixed top-0 right-0 w-[calc(100%-240px)] h-16 bg-white/80 backdrop-blur-md flex items-center justify-between px-8 z-40 border-b border-slate-200">
+<div class="flex flex-col">
+<h1 class="text-xl font-semibold text-slate-900 leading-none">Properties</h1>
+<p class="text-xs text-slate-500 mt-1">Scraped rental listings across all tracked buildings</p>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative group">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 material-symbols-outlined text-sm" data-icon="search">search</span>
+<input class="pl-9 pr-4 py-1.5 bg-slate-100 border-transparent focus:bg-white focus:ring-1 focus:ring-blue-600 rounded text-sm w-64 transition-all" placeholder="Quick search..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<button class="border border-slate-200 text-slate-700 px-3 py-1.5 text-sm font-medium hover:bg-slate-50 transition-colors flex items-center gap-2 rounded">
+<span class="material-symbols-outlined text-sm" data-icon="download">download</span>
+                    Export CSV
+                </button>
+<button class="text-slate-500 hover:text-blue-600 transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-slate-500 hover:text-blue-600 transition-colors">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-[240px] pt-16 min-h-screen">
+<div class="p-8 space-y-6">
+<!-- Filter Bar Card -->
+<section class="bg-white border border-slate-200 rounded-lg p-4 shadow-sm">
+<div class="flex flex-wrap items-center gap-4">
+<div class="flex flex-col gap-1">
+<label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Scrape Date</label>
+<input class="border border-slate-200 rounded px-3 py-1.5 text-sm w-36 bg-slate-50" type="text" value="Apr 7, 2026"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Building</label>
+<select class="border border-slate-200 rounded px-3 py-1.5 text-sm w-44 bg-slate-50">
+<option>All (5)</option>
+<option>The Brook</option>
+<option>The Everly</option>
+<option>Eighty Nine DeKalb</option>
+<option>505 State Street</option>
+<option>Brooklyn Tower</option>
+</select>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Beds</label>
+<select class="border border-slate-200 rounded px-3 py-1.5 text-sm w-28 bg-slate-50">
+<option>Any</option>
+<option>Studio</option>
+<option>1 Bed</option>
+<option>2 Beds</option>
+<option>3+ Beds</option>
+</select>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Rent Range</label>
+<div class="flex items-center gap-2">
+<input class="border border-slate-200 rounded px-3 py-1.5 text-sm w-24 bg-slate-50" placeholder="Min $" type="text"/>
+<span class="text-slate-400">—</span>
+<input class="border border-slate-200 rounded px-3 py-1.5 text-sm w-24 bg-slate-50" placeholder="Max $" type="text"/>
+</div>
+</div>
+<div class="flex items-end h-full self-end pb-0.5">
+<button class="text-slate-500 text-sm hover:text-slate-800 transition-colors flex items-center gap-1 px-3">
+<span class="material-symbols-outlined text-sm" data-icon="restart_alt">restart_alt</span>
+                            Reset filters
+                        </button>
+</div>
+</div>
+</section>
+<div class="flex items-center justify-between">
+<span class="text-sm text-slate-500 font-medium">47 results</span>
+<div class="flex items-center gap-2">
+<button class="p-1.5 rounded hover:bg-slate-200 text-slate-600 transition-colors">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+</button>
+<button class="p-1.5 rounded bg-white shadow-sm border border-slate-200 text-blue-600 transition-colors">
+<span class="material-symbols-outlined" data-icon="format_list_bulleted">format_list_bulleted</span>
+</button>
+</div>
+</div>
+<!-- Data Table Card -->
+<section class="bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left text-sm border-collapse">
+<thead class="bg-slate-50 border-b border-slate-200">
+<tr>
+<th class="px-6 py-4 font-semibold text-slate-600">Unit #</th>
+<th class="px-6 py-4 font-semibold text-slate-600">Building</th>
+<th class="px-6 py-4 font-semibold text-slate-600">Beds</th>
+<th class="px-6 py-4 font-semibold text-slate-600">Baths</th>
+<th class="px-6 py-4 font-semibold text-slate-600">Area</th>
+<th class="px-6 py-4 font-semibold text-slate-600 text-right">Rent</th>
+<th class="px-6 py-4 font-semibold text-slate-600">Listed By</th>
+<th class="px-6 py-4 font-semibold text-slate-600">Availability</th>
+<th class="px-6 py-4 font-semibold text-slate-600 text-center">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100">
+<!-- Row 1 -->
+<tr class="hover:bg-slate-50/80 transition-colors group">
+<td class="px-6 py-4 font-medium text-blue-600 cursor-pointer hover:underline">12A</td>
+<td class="px-6 py-4 text-slate-700">The Brook</td>
+<td class="px-6 py-4 text-slate-500">1 Bed</td>
+<td class="px-6 py-4 text-slate-500">1.0</td>
+<td class="px-6 py-4 text-slate-500">745 sqft</td>
+<td class="px-6 py-4 text-right font-semibold tabular-nums">$4,850</td>
+<td class="px-6 py-4 text-slate-500">Douglas Elliman</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-50 text-green-700 border border-green-100">Available Now</span>
+</td>
+<td class="px-6 py-4 text-center">
+<button class="text-slate-400 hover:text-blue-600">
+<span class="material-symbols-outlined text-lg" data-icon="open_in_new">open_in_new</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-slate-50/80 transition-colors">
+<td class="px-6 py-4 font-medium text-blue-600 cursor-pointer hover:underline">PH-2</td>
+<td class="px-6 py-4 text-slate-700">Brooklyn Tower</td>
+<td class="px-6 py-4 text-slate-500">3 Beds</td>
+<td class="px-6 py-4 text-slate-500">3.5</td>
+<td class="px-6 py-4 text-slate-500">2,100 sqft</td>
+<td class="px-6 py-4 text-right font-semibold tabular-nums">$14,200</td>
+<td class="px-6 py-4 text-slate-500">JDS Real Estate</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-50 text-amber-700 border border-amber-100">Jun 15, 2026</span>
+</td>
+<td class="px-6 py-4 text-center">
+<button class="text-slate-400 hover:text-blue-600">
+<span class="material-symbols-outlined text-lg" data-icon="open_in_new">open_in_new</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-slate-50/80 transition-colors">
+<td class="px-6 py-4 font-medium text-blue-600 cursor-pointer hover:underline">504</td>
+<td class="px-6 py-4 text-slate-700">The Everly</td>
+<td class="px-6 py-4 text-slate-500">Studio</td>
+<td class="px-6 py-4 text-slate-500">1.0</td>
+<td class="px-6 py-4 text-slate-500">480 sqft</td>
+<td class="px-6 py-4 text-right font-semibold tabular-nums">$3,675</td>
+<td class="px-6 py-4 text-slate-500">Corcoran Group</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-50 text-green-700 border border-green-100">Available Now</span>
+</td>
+<td class="px-6 py-4 text-center">
+<button class="text-slate-400 hover:text-blue-600">
+<span class="material-symbols-outlined text-lg" data-icon="open_in_new">open_in_new</span>
+</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-slate-50/80 transition-colors">
+<td class="px-6 py-4 font-medium text-blue-600 cursor-pointer hover:underline">2201</td>
+<td class="px-6 py-4 text-slate-700">505 State Street</td>
+<td class="px-6 py-4 text-slate-500">2 Beds</td>
+<td class="px-6 py-4 text-slate-500">2.0</td>
+<td class="px-6 py-4 text-slate-500">1,120 sqft</td>
+<td class="px-6 py-4 text-right font-semibold tabular-nums">$6,400</td>
+<td class="px-6 py-4 text-slate-500">Compass</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-50 text-amber-700 border border-amber-100">May 1, 2026</span>
+</td>
+<td class="px-6 py-4 text-center">
+<button class="text-slate-400 hover:text-blue-600">
+<span class="material-symbols-outlined text-lg" data-icon="open_in_new">open_in_new</span>
+</button>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-slate-50/80 transition-colors">
+<td class="px-6 py-4 font-medium text-blue-600 cursor-pointer hover:underline">9F</td>
+<td class="px-6 py-4 text-slate-700">Eighty Nine DeKalb</td>
+<td class="px-6 py-4 text-slate-500">1 Bed</td>
+<td class="px-6 py-4 text-slate-500">1.0</td>
+<td class="px-6 py-4 text-slate-500">710 sqft</td>
+<td class="px-6 py-4 text-right font-semibold tabular-nums">$4,225</td>
+<td class="px-6 py-4 text-slate-500">StreetEasy Agent</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-50 text-green-700 border border-green-100">Available Now</span>
+</td>
+<td class="px-6 py-4 text-center">
+<button class="text-slate-400 hover:text-blue-600">
+<span class="material-symbols-outlined text-lg" data-icon="open_in_new">open_in_new</span>
+</button>
+</td>
+</tr>
+<!-- Row 6 -->
+<tr class="hover:bg-slate-50/80 transition-colors">
+<td class="px-6 py-4 font-medium text-blue-600 cursor-pointer hover:underline">15C</td>
+<td class="px-6 py-4 text-slate-700">The Brook</td>
+<td class="px-6 py-4 text-slate-500">2 Beds</td>
+<td class="px-6 py-4 text-slate-500">2.0</td>
+<td class="px-6 py-4 text-slate-500">1,050 sqft</td>
+<td class="px-6 py-4 text-right font-semibold tabular-nums">$6,100</td>
+<td class="px-6 py-4 text-slate-500">Douglas Elliman</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-50 text-green-700 border border-green-100">Available Now</span>
+</td>
+<td class="px-6 py-4 text-center">
+<button class="text-slate-400 hover:text-blue-600">
+<span class="material-symbols-outlined text-lg" data-icon="open_in_new">open_in_new</span>
+</button>
+</td>
+</tr>
+<!-- Row 7 -->
+<tr class="hover:bg-slate-50/80 transition-colors">
+<td class="px-6 py-4 font-medium text-blue-600 cursor-pointer hover:underline">4102</td>
+<td class="px-6 py-4 text-slate-700">Brooklyn Tower</td>
+<td class="px-6 py-4 text-slate-500">1 Bed</td>
+<td class="px-6 py-4 text-slate-500">1.0</td>
+<td class="px-6 py-4 text-slate-500">820 sqft</td>
+<td class="px-6 py-4 text-right font-semibold tabular-nums">$5,950</td>
+<td class="px-6 py-4 text-slate-500">JDS Real Estate</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-50 text-amber-700 border border-amber-100">Jul 1, 2026</span>
+</td>
+<td class="px-6 py-4 text-center">
+<button class="text-slate-400 hover:text-blue-600">
+<span class="material-symbols-outlined text-lg" data-icon="open_in_new">open_in_new</span>
+</button>
+</td>
+</tr>
+<!-- Row 8 -->
+<tr class="hover:bg-slate-50/80 transition-colors">
+<td class="px-6 py-4 font-medium text-blue-600 cursor-pointer hover:underline">301</td>
+<td class="px-6 py-4 text-slate-700">The Everly</td>
+<td class="px-6 py-4 text-slate-500">1 Bed</td>
+<td class="px-6 py-4 text-slate-500">1.0</td>
+<td class="px-6 py-4 text-slate-500">765 sqft</td>
+<td class="px-6 py-4 text-right font-semibold tabular-nums">$4,300</td>
+<td class="px-6 py-4 text-slate-500">Corcoran Group</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-50 text-green-700 border border-green-100">Available Now</span>
+</td>
+<td class="px-6 py-4 text-center">
+<button class="text-slate-400 hover:text-blue-600">
+<span class="material-symbols-outlined text-lg" data-icon="open_in_new">open_in_new</span>
+</button>
+</td>
+</tr>
+<!-- Row 9 -->
+<tr class="hover:bg-slate-50/80 transition-colors">
+<td class="px-6 py-4 font-medium text-blue-600 cursor-pointer hover:underline">18G</td>
+<td class="px-6 py-4 text-slate-700">Eighty Nine DeKalb</td>
+<td class="px-6 py-4 text-slate-500">Studio</td>
+<td class="px-6 py-4 text-slate-500">1.0</td>
+<td class="px-6 py-4 text-slate-500">510 sqft</td>
+<td class="px-6 py-4 text-right font-semibold tabular-nums">$3,450</td>
+<td class="px-6 py-4 text-slate-500">StreetEasy Agent</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-50 text-green-700 border border-green-100">Available Now</span>
+</td>
+<td class="px-6 py-4 text-center">
+<button class="text-slate-400 hover:text-blue-600">
+<span class="material-symbols-outlined text-lg" data-icon="open_in_new">open_in_new</span>
+</button>
+</td>
+</tr>
+<!-- Row 10 -->
+<tr class="hover:bg-slate-50/80 transition-colors">
+<td class="px-6 py-4 font-medium text-blue-600 cursor-pointer hover:underline">1412</td>
+<td class="px-6 py-4 text-slate-700">505 State Street</td>
+<td class="px-6 py-4 text-slate-500">1 Bed</td>
+<td class="px-6 py-4 text-slate-500">1.0</td>
+<td class="px-6 py-4 text-slate-500">790 sqft</td>
+<td class="px-6 py-4 text-right font-semibold tabular-nums">$4,750</td>
+<td class="px-6 py-4 text-slate-500">Compass</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-50 text-green-700 border border-green-100">Available Now</span>
+</td>
+<td class="px-6 py-4 text-center">
+<button class="text-slate-400 hover:text-blue-600">
+<span class="material-symbols-outlined text-lg" data-icon="open_in_new">open_in_new</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Footer/Pagination -->
+<div class="px-6 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
+<p class="text-sm text-slate-500">Showing 1-10 of 47 properties</p>
+<div class="flex items-center gap-1">
+<button class="w-8 h-8 flex items-center justify-center rounded border border-slate-200 text-slate-400 hover:bg-white transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded bg-blue-600 text-white font-medium text-sm">1</button>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-transparent text-slate-600 hover:bg-slate-200 text-sm transition-colors">2</button>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-transparent text-slate-600 hover:bg-slate-200 text-sm transition-colors">3</button>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-transparent text-slate-600 hover:bg-slate-200 text-sm transition-colors">4</button>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-transparent text-slate-600 hover:bg-slate-200 text-sm transition-colors">5</button>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-slate-200 text-slate-600 hover:bg-white transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</section>
+</div>
+</main>
+</body></html>

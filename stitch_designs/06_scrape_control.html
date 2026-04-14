@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PropScrape - Scrape Control</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+                primary: "#2563EB",
+                slate: {
+                    50: "#F8FAFC",
+                    100: "#F1F5F9",
+                    200: "#E2E8F0",
+                    300: "#CBD5E1",
+                    400: "#94A3B8",
+                    500: "#64748B",
+                    600: "#475569",
+                    700: "#334155",
+                    800: "#1E293B",
+                    900: "#0F172A",
+                }
+            },
+            borderRadius: {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            fontFamily: {
+                    "headline": ["Inter", "sans-serif"],
+                    "body": ["Inter", "sans-serif"],
+                    "label": ["Inter", "sans-serif"],
+                    "mono": ["JetBrains Mono", "Menlo", "monospace"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased font-body">
+<!-- SideNavBar Shell -->
+<aside class="flex flex-col fixed left-0 top-0 h-full w-[240px] border-r border-slate-200 bg-white z-50">
+<div class="text-xl font-bold text-slate-900 px-6 py-6 font-headline tracking-tight">
+            PropScrape
+            <span class="block text-xs font-medium text-slate-400 mt-0.5">Admin Console</span>
+</div>
+<nav class="flex-1 px-3 space-y-1">
+<!-- Dashboard -->
+<a class="flex items-center gap-3 px-3 py-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-slate-600" data-icon="dashboard">dashboard</span>
+<span class="font-medium text-sm">Dashboard</span>
+</a>
+<!-- URLs -->
+<a class="flex items-center gap-3 px-3 py-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-slate-600" data-icon="link">link</span>
+<span class="font-medium text-sm">URLs</span>
+</a>
+<!-- Properties -->
+<a class="flex items-center gap-3 px-3 py-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-slate-600" data-icon="home_work">home_work</span>
+<span class="font-medium text-sm">Properties</span>
+</a>
+<!-- Price History -->
+<a class="flex items-center gap-3 px-3 py-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-slate-600" data-icon="history">history</span>
+<span class="font-medium text-sm">Price History</span>
+</a>
+<!-- Scrape Control (Active) -->
+<a class="flex items-center gap-3 px-3 py-2.5 text-blue-600 font-semibold border-r-2 border-blue-600 bg-blue-50/50 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="play_circle" style="font-variation-settings: 'FILL' 1;">play_circle</span>
+<span class="font-medium text-sm">Scrape Control</span>
+</a>
+</nav>
+<div class="p-4 border-t border-slate-100">
+<div class="flex items-center gap-3 px-2">
+<img alt="Admin profile avatar" class="w-8 h-8 rounded-full border border-slate-200" data-alt="minimalist flat avatar of a professional administrator with soft features and neutral background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKrk02G45DO64wfJXyrksYUZlwjzyA0Z7B9PFAFYpv63TMIW93FeM9FSB-vd28T8NhvH4XwvcPImQY5-NihNoxRv6ajvyIg-6nsfYzpm6dY6yuKEDq-5m51ASOY0b9bRo43Rtzb7Liu5w3Jv-bGiw_AGBpq0furLQulj7SHybR4jBkj73uod_8gCuJHu2HtmqAlM6LCjLtN5SDDU0OhANS9OtkcVaDzt6Ix6TYvZWV3VcKGfrsAoG5_UPduM8QBI2DqouZOkAcUMo"/>
+<div class="flex flex-col">
+<span class="text-xs font-semibold text-slate-700">Admin</span>
+<span class="text-[10px] text-slate-400 uppercase tracking-wider">Superuser</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- TopNavBar Shell -->
+<header class="flex justify-between items-center h-20 px-10 ml-[240px] w-[calc(100%-240px)] bg-white/80 backdrop-blur-md sticky top-0 z-40">
+<div class="flex flex-col">
+<h1 class="text-xl font-bold text-slate-900 tracking-tight leading-none">Scrape Control</h1>
+<p class="text-sm text-slate-500 mt-1">Trigger scrapes and monitor extension health</p>
+</div>
+<div class="flex items-center gap-4">
+<button class="px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-all rounded-md focus:ring-2 focus:ring-blue-500">
+                View Logs
+            </button>
+<div class="h-4 w-[1px] bg-slate-200"></div>
+<button class="flex items-center gap-2 text-slate-400 hover:text-slate-600 transition-colors">
+<span class="material-symbols-outlined text-xl" data-icon="settings">settings</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-[240px] p-10 max-w-[1400px]">
+<!-- Status Row -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+<div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+<div class="flex items-center gap-2 mb-3">
+<div class="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]"></div>
+<span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Extension Status</span>
+</div>
+<div class="text-lg font-bold text-slate-900">Connected</div>
+<div class="text-xs text-slate-400 mt-1 font-medium">Chrome Extension v1.0.0 · Uptime 2h 14m</div>
+</div>
+<div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+<div class="flex items-center gap-2 mb-3">
+<div class="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]"></div>
+<span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Backend Server</span>
+</div>
+<div class="text-lg font-bold text-slate-900">Running</div>
+<div class="text-xs text-slate-400 mt-1 font-medium">WebSocket ws://localhost:8765</div>
+</div>
+<div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+<div class="flex items-center gap-2 mb-3">
+<div class="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.4)]"></div>
+<span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Scraper State</span>
+</div>
+<div class="text-lg font-bold text-slate-900">Idle</div>
+<div class="text-xs text-slate-400 mt-1 font-medium">Last run: 14m ago · Next scheduled: manual</div>
+</div>
+</div>
+<!-- Main Action Card -->
+<div class="bg-white border border-slate-200 rounded-xl p-8 mb-8 shadow-sm">
+<div class="flex items-center justify-between">
+<div class="max-w-xl">
+<h3 class="text-lg font-bold text-slate-900 mb-2">Run Scrape Now</h3>
+<p class="text-slate-500 text-sm leading-relaxed">
+                        Triggers a full scrape across all 5 active URLs. This operation includes DOM parsing, asset analysis, and price trend calculation. Average run takes ~15 minutes.
+                    </p>
+</div>
+<div class="text-right">
+<button class="bg-primary hover:bg-blue-700 text-white font-semibold py-2.5 px-8 rounded-lg shadow-sm transition-all active:scale-95 mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-lg" data-icon="play_arrow" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                        Start Scrape
+                    </button>
+<p class="text-[11px] font-medium text-slate-400">Last run: Apr 7, 2026 · 2:12 PM · Completed</p>
+</div>
+</div>
+</div>
+<!-- Detail Row -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+<!-- Active URLs Queue -->
+<div class="bg-white border border-slate-200 rounded-xl flex flex-col shadow-sm">
+<div class="p-5 border-b border-slate-100 flex items-center justify-between">
+<h3 class="font-bold text-slate-900 flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400" data-icon="list_alt">list_alt</span>
+                        Active URLs Queue
+                    </h3>
+<span class="bg-slate-100 text-slate-500 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">5 Active</span>
+</div>
+<div class="flex-1 p-2">
+<div class="space-y-1">
+<!-- URL Item -->
+<div class="flex items-center justify-between p-3 hover:bg-slate-50 rounded-lg transition-colors group">
+<div class="flex items-center gap-3">
+<div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+<span class="text-sm font-medium text-slate-700 group-hover:text-primary transition-colors cursor-pointer">The Brook</span>
+</div>
+<span class="text-[10px] font-bold text-slate-400 bg-slate-50 border border-slate-100 px-2 py-1 rounded">~3 min</span>
+</div>
+<div class="flex items-center justify-between p-3 hover:bg-slate-50 rounded-lg transition-colors group">
+<div class="flex items-center gap-3">
+<div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+<span class="text-sm font-medium text-slate-700 group-hover:text-primary transition-colors cursor-pointer">The Everly</span>
+</div>
+<span class="text-[10px] font-bold text-slate-400 bg-slate-50 border border-slate-100 px-2 py-1 rounded">~3 min</span>
+</div>
+<div class="flex items-center justify-between p-3 hover:bg-slate-50 rounded-lg transition-colors group">
+<div class="flex items-center gap-3">
+<div class="w-1.5 h-1.5 rounded-full bg-amber-500"></div>
+<span class="text-sm font-medium text-slate-700 group-hover:text-primary transition-colors cursor-pointer">Eighty Nine DeKalb</span>
+</div>
+<span class="text-[10px] font-bold text-slate-400 bg-slate-50 border border-slate-100 px-2 py-1 rounded">~3 min</span>
+</div>
+<div class="flex items-center justify-between p-3 hover:bg-slate-50 rounded-lg transition-colors group">
+<div class="flex items-center gap-3">
+<div class="w-1.5 h-1.5 rounded-full bg-amber-500"></div>
+<span class="text-sm font-medium text-slate-700 group-hover:text-primary transition-colors cursor-pointer">505 State Street</span>
+</div>
+<span class="text-[10px] font-bold text-slate-400 bg-slate-50 border border-slate-100 px-2 py-1 rounded">~3 min</span>
+</div>
+<div class="flex items-center justify-between p-3 hover:bg-slate-50 rounded-lg transition-colors group">
+<div class="flex items-center gap-3">
+<div class="w-1.5 h-1.5 rounded-full bg-amber-500"></div>
+<span class="text-sm font-medium text-slate-700 group-hover:text-primary transition-colors cursor-pointer">Brooklyn Tower</span>
+</div>
+<span class="text-[10px] font-bold text-slate-400 bg-slate-50 border border-slate-100 px-2 py-1 rounded">~3 min</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Activity Log -->
+<div class="bg-white border border-slate-200 rounded-xl flex flex-col shadow-sm">
+<div class="p-5 border-b border-slate-100">
+<h3 class="font-bold text-slate-900 flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400" data-icon="terminal">terminal</span>
+                        Recent Activity Log
+                    </h3>
+</div>
+<div class="flex-1 p-4 bg-slate-50/50 m-2 rounded-lg border border-slate-100 overflow-hidden font-mono text-[12px] leading-relaxed text-slate-600">
+<div class="flex gap-3">
+<span class="text-slate-400 shrink-0">14:12:03</span>
+<span class="text-blue-600 font-bold shrink-0">[INFO]</span>
+<span>Scrape started (5 URLs)</span>
+</div>
+<div class="flex gap-3 mt-1">
+<span class="text-slate-400 shrink-0">14:12:45</span>
+<span class="text-blue-600 font-bold shrink-0">[INFO]</span>
+<span>The Brook: 6 properties extracted</span>
+</div>
+<div class="flex gap-3 mt-1">
+<span class="text-slate-400 shrink-0">14:14:02</span>
+<span class="text-amber-600 font-bold shrink-0">[WARN]</span>
+<span>Captcha detected — solving...</span>
+</div>
+<div class="flex gap-3 mt-1">
+<span class="text-slate-400 shrink-0">14:14:38</span>
+<span class="text-blue-600 font-bold shrink-0">[INFO]</span>
+<span>Captcha solved in 4200ms</span>
+</div>
+<div class="flex gap-3 mt-1">
+<span class="text-slate-400 shrink-0">14:15:20</span>
+<span class="text-blue-600 font-bold shrink-0">[INFO]</span>
+<span>The Everly: 12 properties extracted</span>
+</div>
+<div class="flex gap-3 mt-1">
+<span class="text-slate-400 shrink-0">14:16:41</span>
+<span class="text-red-500 font-bold shrink-0">[ERROR]</span>
+<span>Eighty Nine DeKalb: Timeout</span>
+</div>
+<div class="flex gap-3 mt-1 border-t border-slate-200/50 pt-1">
+<span class="text-slate-400 shrink-0">14:18:55</span>
+<span class="text-emerald-600 font-bold shrink-0">[INFO]</span>
+<span>Scrape completed — 47 properties total</span>
+</div>
+<div class="mt-4 animate-pulse">
+<span class="inline-block w-2 h-4 bg-slate-300"></span>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Card: Scraping Schedule -->
+<div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-6">
+<div class="flex flex-col">
+<div class="flex items-center gap-3">
+<span class="font-bold text-slate-900">Daily auto-scrape</span>
+<!-- Toggle Switch Off -->
+<button class="w-10 h-5 bg-slate-200 rounded-full relative transition-colors focus:outline-none ring-offset-2 focus:ring-2 focus:ring-blue-500">
+<span class="absolute left-0.5 top-0.5 bg-white w-4 h-4 rounded-full shadow-sm transition-transform"></span>
+</button>
+</div>
+<p class="text-xs text-slate-400 mt-1">Scrapes only run manually via the button above</p>
+</div>
+<div class="h-10 w-[1px] bg-slate-100 hidden md:block"></div>
+<div class="flex flex-col opacity-40">
+<label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Execution Time (UTC)</label>
+<div class="flex items-center gap-2">
+<input class="bg-slate-50 border border-slate-200 rounded text-sm px-2 py-1 w-20 font-mono text-slate-600 cursor-not-allowed" disabled="" type="text" value="03:00"/>
+<span class="text-xs font-medium text-slate-400">Every 24 hours</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2 text-slate-300">
+<span class="material-symbols-outlined" data-icon="lock">lock</span>
+<span class="text-xs font-medium italic">Schedule locked in current plan</span>
+</div>
+</div>
+</div>
+</main>
+</body></html>
