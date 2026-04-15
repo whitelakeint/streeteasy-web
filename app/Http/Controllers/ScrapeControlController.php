@@ -51,6 +51,40 @@ class ScrapeControlController extends Controller
         return view('scrape.index', compact('activeUrls','status','online','lastScrape','logs','logCounts'));
     }
 
+    /**
+     * GET /scrape-control/logs.json — AJAX polling endpoint.
+     * Returns the latest log entries + live counts for in-place refresh.
+     */
+    public function logsJson(Request $request)
+    {
+        $q = ScrapeLog::with('scrapeUrl:id,name')->orderByDesc('created_at');
+        if ($level = $request->query('level')) {
+            $q->where('level', $level);
+        }
+        $logs = $q->limit(100)->get()->map(function ($log) {
+            return [
+                'id'            => $log->id,
+                'created_at'    => $log->created_at->format('M j H:i:s'),
+                'level'         => $log->level,
+                'event'         => $log->event,
+                'building_name' => $log->scrapeUrl?->name,
+                'message'       => $log->message,
+            ];
+        });
+
+        return response()->json([
+            'logs'   => $logs,
+            'counts' => [
+                'info'  => ScrapeLog::where('level', 'info')->count(),
+                'warn'  => ScrapeLog::where('level', 'warn')->count(),
+                'error' => ScrapeLog::where('level', 'error')->count(),
+            ],
+            'scraper_state' => [
+                'running' => false, // overridden live by the front-end's /status probe if needed
+            ],
+        ]);
+    }
+
     public function run(Request $request)
     {
         try {

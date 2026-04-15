@@ -29,5 +29,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/price-history/{property}', [PriceHistoryController::class, 'show'])->name('price-history.show');
 
     Route::get('/scrape-control', [ScrapeControlController::class, 'index'])->name('scrape.index');
+    Route::get('/scrape-control/logs.json', [ScrapeControlController::class, 'logsJson'])->name('scrape.logs');
     Route::post('/scrape-control/run', [ScrapeControlController::class, 'run'])->name('scrape.run');
 });

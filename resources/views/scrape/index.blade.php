@@ -66,35 +66,50 @@
     @endif
   </div>
 
-  {{-- Scrape Logs (last 10 days, max 100 rows) --}}
-  <div class="bg-white border border-slate-200 rounded-xl p-6">
+  {{-- Scrape Logs (last 10 days, max 100 rows) — auto-refreshes every 3s --}}
+  @php $currentLevel = request('level'); @endphp
+  <div class="bg-white border border-slate-200 rounded-xl p-6"
+       data-logs-url="{{ route('scrape.logs') }}{{ $currentLevel ? '?level='.$currentLevel : '' }}">
     <div class="flex items-center justify-between mb-4 flex-wrap gap-3">
       <div>
         <h3 class="text-sm font-semibold text-slate-900">Scrape Logs</h3>
-        <p class="text-xs text-slate-500 mt-0.5">Activity from the last 10 days · showing up to 100 most recent entries</p>
+        <p class="text-xs text-slate-500 mt-0.5 flex items-center gap-2">
+          <span>Activity from the last 10 days · up to 100 most recent</span>
+          <span class="inline-flex items-center gap-1">
+            <span id="auto-refresh-dot" class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+            <span id="auto-refresh-label" class="text-green-600">live</span>
+          </span>
+        </p>
       </div>
-      @php $currentLevel = request('level'); @endphp
-      <div class="inline-flex rounded-lg border border-slate-200 bg-slate-50 p-0.5 text-xs">
-        <a href="{{ route('scrape.index') }}"
-           class="px-3 py-1.5 font-medium rounded-md transition
-                  {{ !$currentLevel ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-900' }}">
-          All
-        </a>
-        @foreach(['info' => 'Info', 'warn' => 'Warnings', 'error' => 'Errors'] as $lvl => $label)
-          <a href="{{ route('scrape.index') }}?level={{ $lvl }}"
-             class="px-3 py-1.5 font-medium rounded-md transition inline-flex items-center gap-1.5
-                    {{ $currentLevel === $lvl ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-900' }}">
-            {{ $label }}
-            <span class="text-[10px] px-1.5 py-0.5 rounded-full
-                         {{ $lvl === 'error' ? 'bg-red-50 text-red-700' : ($lvl === 'warn' ? 'bg-amber-50 text-amber-700' : 'bg-blue-50 text-blue-700') }}">
-              {{ $logCounts[$lvl] }}
-            </span>
+      <div class="flex items-center gap-2">
+        <div class="inline-flex rounded-lg border border-slate-200 bg-slate-50 p-0.5 text-xs" id="level-tabs">
+          <a href="{{ route('scrape.index') }}"
+             class="px-3 py-1.5 font-medium rounded-md transition
+                    {{ !$currentLevel ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-900' }}">
+            All
           </a>
-        @endforeach
+          @foreach(['info' => 'Info', 'warn' => 'Warnings', 'error' => 'Errors'] as $lvl => $label)
+            <a href="{{ route('scrape.index') }}?level={{ $lvl }}"
+               data-level="{{ $lvl }}"
+               class="px-3 py-1.5 font-medium rounded-md transition inline-flex items-center gap-1.5
+                      {{ $currentLevel === $lvl ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-900' }}">
+              {{ $label }}
+              <span data-count="{{ $lvl }}"
+                    class="text-[10px] px-1.5 py-0.5 rounded-full
+                           {{ $lvl === 'error' ? 'bg-red-50 text-red-700' : ($lvl === 'warn' ? 'bg-amber-50 text-amber-700' : 'bg-blue-50 text-blue-700') }}">
+                {{ $logCounts[$lvl] }}
+              </span>
+            </a>
+          @endforeach
+        </div>
+        <button type="button" id="toggle-autorefresh"
+                class="text-xs text-slate-600 hover:text-slate-900 border border-slate-200 px-3 py-1.5 rounded-md bg-white transition">
+          Pause
+        </button>
       </div>
     </div>
 
-    <div class="bg-slate-950 rounded-lg p-4 font-mono text-xs text-slate-200 max-h-[500px] overflow-y-auto">
+    <div id="logs-container" class="bg-slate-950 rounded-lg p-4 font-mono text-xs text-slate-200 max-h-[500px] overflow-y-auto">
       @forelse($logs as $log)
         @php
           $lvlColor = match($log->level) {
@@ -122,4 +137,125 @@
     </div>
   </div>
 </div>
+
+@push('scripts')
+<script>
+(function () {
+  const container    = document.querySelector('[data-logs-url]');
+  if (!container) return;
+  const url          = container.dataset.logsUrl;
+  const logsEl       = document.getElementById('logs-container');
+  const toggleBtn    = document.getElementById('toggle-autorefresh');
+  const statusDot    = document.getElementById('auto-refresh-dot');
+  const statusLabel  = document.getElementById('auto-refresh-label');
+  const REFRESH_MS   = 3000;
+  let timer = null;
+  let paused = false;
+  let lastTopId = null;
+
+  const levelColor = {
+    error: 'text-red-400',
+    warn:  'text-amber-400',
+    info:  'text-blue-400',
+  };
+
+  function escapeHtml(s) {
+    return String(s ?? '').replace(/[&<>"']/g, c => ({
+      '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+    }[c]));
+  }
+
+  function renderLogs(logs) {
+    if (!logs.length) {
+      logsEl.innerHTML = '<div class="text-center text-slate-500 py-10">No log entries yet.</div>';
+      return;
+    }
+    const html = logs.map(log => {
+      const color = levelColor[log.level] || levelColor.info;
+      const building = log.building_name
+        ? `<span class="text-emerald-400 w-32 flex-shrink-0 truncate">${escapeHtml(log.building_name)}</span>`
+        : `<span class="text-slate-600 w-32 flex-shrink-0">—</span>`;
+      return `
+        <div class="flex gap-3 py-1 border-b border-slate-800/50 last:border-0">
+          <span class="text-slate-500 flex-shrink-0 w-28">${escapeHtml(log.created_at)}</span>
+          <span class="${color} uppercase w-12 flex-shrink-0">${escapeHtml(log.level)}</span>
+          <span class="text-slate-400 w-24 flex-shrink-0 truncate">${escapeHtml(log.event)}</span>
+          ${building}
+          <span class="text-slate-300 flex-1">${escapeHtml(log.message)}</span>
+        </div>`;
+    }).join('');
+    logsEl.innerHTML = html;
+  }
+
+  function updateCounts(counts) {
+    for (const lvl of ['info', 'warn', 'error']) {
+      const badge = document.querySelector(`[data-count="${lvl}"]`);
+      if (badge) badge.textContent = counts[lvl] ?? 0;
+    }
+  }
+
+  async function fetchLogs() {
+    try {
+      const res = await fetch(url, { headers: { 'Accept': 'application/json' }});
+      if (!res.ok) throw new Error(res.statusText);
+      const data = await res.json();
+      const topId = data.logs[0]?.id ?? null;
+
+      // Preserve scroll position if user is looking at older logs
+      const atTop = logsEl.scrollTop < 30;
+
+      if (topId !== lastTopId) {
+        renderLogs(data.logs);
+        lastTopId = topId;
+        if (atTop) logsEl.scrollTop = 0;
+      }
+      updateCounts(data.counts);
+      setIndicator(true);
+    } catch (e) {
+      setIndicator(false);
+    }
+  }
+
+  function setIndicator(ok) {
+    if (paused) {
+      statusDot.className = 'w-1.5 h-1.5 rounded-full bg-slate-400';
+      statusLabel.textContent = 'paused';
+      statusLabel.className = 'text-slate-500';
+    } else if (ok) {
+      statusDot.className = 'w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse';
+      statusLabel.textContent = 'live';
+      statusLabel.className = 'text-green-600';
+    } else {
+      statusDot.className = 'w-1.5 h-1.5 rounded-full bg-red-500';
+      statusLabel.textContent = 'offline';
+      statusLabel.className = 'text-red-600';
+    }
+  }
+
+  function start() {
+    if (timer) return;
+    timer = setInterval(fetchLogs, REFRESH_MS);
+    fetchLogs();
+  }
+  function stop() {
+    if (timer) { clearInterval(timer); timer = null; }
+  }
+
+  toggleBtn.addEventListener('click', () => {
+    paused = !paused;
+    toggleBtn.textContent = paused ? 'Resume' : 'Pause';
+    if (paused) { stop(); setIndicator(true); }
+    else { start(); }
+  });
+
+  // Pause auto-refresh when the tab is hidden to save resources
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stop();
+    else if (!paused) start();
+  });
+
+  start();
+})();
+</script>
+@endpush
 @endsection
