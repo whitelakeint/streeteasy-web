@@ -218,6 +218,11 @@
           {{-- Populated by JS --}}
         </select>
       </div>
+      <a href="{{ route('price-history.export', [$property] + request()->query()) }}"
+         class="text-sm text-slate-600 hover:text-slate-900 inline-flex items-center gap-1.5 px-3 py-2 border border-slate-200 rounded-lg hover:bg-slate-50 self-end transition"
+         title="Export CSV">
+        <span class="material-symbols-outlined text-[16px]">download</span>
+      </a>
       @if($property->listing_url)
         <a href="{{ $property->listing_url }}" target="_blank"
            class="text-sm text-slate-600 hover:text-slate-900 inline-flex items-center gap-1.5 px-3 py-2 border border-slate-200 rounded-lg hover:bg-slate-50 self-end">

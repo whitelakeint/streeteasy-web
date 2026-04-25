@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\ScrapeUrl;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Throwable;
 
 class ScrapeUrlController extends Controller
 {
@@ -46,6 +48,18 @@ class ScrapeUrlController extends Controller
         $url->is_active = !$url->is_active;
         $url->save();
         return back()->with('status', "URL {$url->name} " . ($url->is_active ? 'activated' : 'deactivated'));
+    }
+
+    public function scrape(ScrapeUrl $url)
+    {
+        $base = rtrim(config('services.scraper.control_url', 'http://127.0.0.1:8766'), '/');
+        try {
+            $resp = Http::connectTimeout(5)->timeout(30)->post("{$base}/scrape/{$url->id}");
+            $msg = $resp->json('message', 'Single scrape triggered');
+            return back()->with('status', $msg);
+        } catch (Throwable $e) {
+            return back()->with('status', 'Could not reach backend: ' . $e->getMessage());
+        }
     }
 
     public function destroy(ScrapeUrl $url)

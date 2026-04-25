@@ -7,6 +7,11 @@
       <h1 class="text-2xl font-semibold text-slate-900">Properties</h1>
       <p class="text-sm text-slate-500 mt-1">Scraped rental listings across all tracked buildings</p>
     </div>
+    <a href="{{ route('properties.export', request()->query()) }}"
+       class="text-sm text-slate-600 hover:text-slate-900 inline-flex items-center gap-1.5 px-4 py-2 border border-slate-200 rounded-lg hover:bg-slate-50 transition">
+      <span class="material-symbols-outlined text-[18px]">download</span>
+      Export CSV
+    </a>
   </div>
 
   <form method="GET" class="bg-white border border-slate-200 rounded-xl p-4 mb-4">

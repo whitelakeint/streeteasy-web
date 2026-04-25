@@ -76,13 +76,21 @@
               {{ $u->last_scraped_at?->diffForHumans() ?? '—' }}
             </td>
             <td class="px-4 py-3 text-right">
-              <form method="POST" action="{{ route('urls.destroy', $u) }}"
-                    onsubmit="return confirm('Delete {{ $u->name }}? All its history will be removed.')">
-                @csrf @method('DELETE')
-                <button class="text-slate-400 hover:text-red-600" title="Delete">
-                  <span class="material-symbols-outlined text-[18px]">delete</span>
-                </button>
-              </form>
+              <div class="flex items-center justify-end gap-1">
+                <form method="POST" action="{{ route('urls.scrape', $u) }}">
+                  @csrf
+                  <button class="text-slate-400 hover:text-primary p-1 rounded hover:bg-slate-100 transition" title="Scrape this URL">
+                    <span class="material-symbols-outlined text-[18px]">play_arrow</span>
+                  </button>
+                </form>
+                <form method="POST" action="{{ route('urls.destroy', $u) }}"
+                      onsubmit="return confirm('Delete {{ $u->name }}? All its history will be removed.')">
+                  @csrf @method('DELETE')
+                  <button class="text-slate-400 hover:text-red-600 p-1 rounded hover:bg-slate-100 transition" title="Delete">
+                    <span class="material-symbols-outlined text-[18px]">delete</span>
+                  </button>
+                </form>
+              </div>
             </td>
           </tr>
         @empty
