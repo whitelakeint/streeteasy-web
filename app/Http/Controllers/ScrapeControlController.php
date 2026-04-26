@@ -64,7 +64,7 @@ class ScrapeControlController extends Controller
         $logs = $q->limit(100)->get()->map(function ($log) {
             return [
                 'id'            => $log->id,
-                'created_at'    => $log->created_at->format('M j H:i:s'),
+                'created_at'    => $log->created_at->format('m-d-Y H:i:s'),
                 'level'         => $log->level,
                 'event'         => $log->event,
                 'building_name' => $log->scrapeUrl?->name,

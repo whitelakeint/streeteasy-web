@@ -119,7 +119,7 @@
           };
         @endphp
         <div class="flex gap-3 py-1 border-b border-slate-800/50 last:border-0">
-          <span class="text-slate-500 flex-shrink-0 w-28">{{ $log->created_at->format('M j H:i:s') }}</span>
+          <span class="text-slate-500 flex-shrink-0 w-28">{{ $log->created_at->format('m-d-Y H:i:s') }}</span>
           <span class="{{ $lvlColor }} uppercase w-12 flex-shrink-0">{{ $log->level }}</span>
           <span class="text-slate-400 w-24 flex-shrink-0 truncate">{{ $log->event }}</span>
           @if($log->scrapeUrl)

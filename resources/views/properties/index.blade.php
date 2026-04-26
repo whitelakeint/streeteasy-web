@@ -55,7 +55,7 @@
         <a href="{{ route('properties.index') }}" class="text-sm text-slate-500 hover:text-slate-900 px-3 py-2">Reset</a>
       </div>
     </div>
-    <p class="text-xs text-slate-500 mt-3">{{ $props->total() }} results for {{ \Carbon\Carbon::parse($date)->format('M j, Y') }}</p>
+    <p class="text-xs text-slate-500 mt-3">{{ $props->total() }} results for {{ \Carbon\Carbon::parse($date)->format('m-d-Y') }}</p>
   </form>
 
   <div class="bg-white border border-slate-200 rounded-xl overflow-hidden">

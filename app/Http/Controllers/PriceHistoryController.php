@@ -65,7 +65,7 @@ class PriceHistoryController extends Controller
         $rangeLabel = match ($range) {
             '30'     => 'Last 30 days',
             '90'     => 'Last 90 days',
-            'custom' => $fromDate->format('M j') . ' – ' . $toDate->format('M j, Y'),
+            'custom' => $fromDate->format('m-d-Y') . ' – ' . $toDate->format('m-d-Y'),
             default  => 'Last 7 days',
         };
 

@@ -67,7 +67,7 @@
             callbacks: {
               title: (items) => {
                 const d = new Date(items[0].label);
-                return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+                return String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0') + '-' + d.getFullYear();
               },
               label: (item) => '$' + item.parsed.y.toLocaleString(),
               afterLabel: (item) => sources[item.dataIndex]
@@ -84,7 +84,7 @@
               callback: function(val) {
                 const label = this.getLabelForValue(val);
                 const d = new Date(label);
-                return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                return String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
               }
             }
           },
@@ -175,12 +175,12 @@
   if (count($labels) > 0) {
       $first = $labels[0];
       $last  = $labels[count($labels) - 1];
-      $firstLabel = $first instanceof \Carbon\Carbon ? $first->format('M j') : (string) $first;
-      $lastLabel  = $last  instanceof \Carbon\Carbon ? $last->format('M j')  : (string) $last;
+      $firstLabel = $first instanceof \Carbon\Carbon ? $first->format('m-d-Y') : (string) $first;
+      $lastLabel  = $last  instanceof \Carbon\Carbon ? $last->format('m-d-Y')  : (string) $last;
   }
 
-  $firstSeenStr   = $firstSeen   instanceof \Carbon\Carbon ? $firstSeen->format('M j, Y')   : ($firstSeen   ? (string) $firstSeen : '—');
-  $lastUpdatedStr = $lastUpdated instanceof \Carbon\Carbon ? $lastUpdated->format('M j, Y') : ($lastUpdated ? (string) $lastUpdated : '—');
+  $firstSeenStr   = $firstSeen   instanceof \Carbon\Carbon ? $firstSeen->format('m-d-Y')   : ($firstSeen   ? (string) $firstSeen : '—');
+  $lastUpdatedStr = $lastUpdated instanceof \Carbon\Carbon ? $lastUpdated->format('m-d-Y') : ($lastUpdated ? (string) $lastUpdated : '—');
 @endphp
 <div class="p-8 max-w-[1400px]">
   <div class="text-xs text-slate-500 mb-3">
@@ -326,7 +326,7 @@
                 $delta = $prev && $row->rent && $prev ? (($row->rent - $prev) / $prev) * 100 : 0;
                 $prev = $row->rent;
                 $dateStr = $row->scrape_date instanceof \Carbon\Carbon
-                    ? $row->scrape_date->format('M j, Y')
+                    ? $row->scrape_date->format('m-d-Y')
                     : (string) $row->scrape_date;
               @endphp
               <tr>
