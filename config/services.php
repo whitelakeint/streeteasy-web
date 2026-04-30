@@ -36,9 +36,10 @@ return [
     ],
 
     'scraper' => [
-        'token'       => env('SCRAPER_API_TOKEN'),
-        'control_url' => env('SCRAPER_CONTROL_URL', 'http://127.0.0.1:8766'),
-        'ws_url'      => env('SCRAPER_WS_URL', 'ws://127.0.0.1:8765'),
+        'token'        => env('SCRAPER_API_TOKEN'),
+        'control_url'  => env('SCRAPER_CONTROL_URL', 'http://127.0.0.1:8766'),
+        'ws_url'       => env('SCRAPER_WS_URL', 'ws://127.0.0.1:8765'),
+        'report_email' => env('SCRAPER_REPORT_EMAIL'),
     ],
 
 ];

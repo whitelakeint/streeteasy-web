@@ -29,7 +29,9 @@ class ScrapeControlController extends Controller
                 $online = true;
             }
         } catch (Throwable $e) {
-            // backend offline — show warning in UI
+            logger()->warning("Scraper status check failed: {$e->getMessage()}", [
+                'url' => $this->base() . '/status',
+            ]);
         }
         $status['active_urls'] = $activeUrls->count();
 

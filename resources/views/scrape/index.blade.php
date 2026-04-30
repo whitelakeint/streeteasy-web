@@ -29,7 +29,7 @@
         <span class="w-2 h-2 rounded-full {{ $online ? 'bg-green-500' : 'bg-red-500' }}"></span>
         <span class="text-lg font-semibold text-slate-900">{{ $online ? 'Running' : 'Offline' }}</span>
       </div>
-      <div class="text-xs text-slate-500 mt-2">WebSocket ws://localhost:8765</div>
+      <div class="text-xs text-slate-500 mt-2">{{ config('services.scraper.control_url') }}</div>
     </div>
     <div class="bg-white border border-slate-200 rounded-xl p-6">
       <div class="text-xs text-slate-500 font-medium mb-2">Scraper State</div>
